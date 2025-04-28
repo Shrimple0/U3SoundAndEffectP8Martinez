@@ -12,6 +12,7 @@ public class MoveLeft : MonoBehaviour
 
     // Update is called once per frame
     private float speed = 30;
+    private PlayerController PlayerControllerScript;
     void Update()
     {
         transform.Translate(Vector3.left * Time.deltaTime * speed);
