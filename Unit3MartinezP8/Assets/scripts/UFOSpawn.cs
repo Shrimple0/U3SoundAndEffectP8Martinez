@@ -4,29 +4,32 @@ using UnityEngine;
 
 public class UFOSpawn : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public GameObject UFOPrefab;
-    private Vector3 spawnPos = new Vector3(28, 7, 0);
-    private float startDelay = 2;
-    private float repeatRate = 2;
+    public GameObject[] UFOPrefab;
+    private Vector3 spawnPos = new Vector3(20, 9, 0);
+    private float startDelay = 1.0f;
+    private float repeatRate = 1.5f;
     private PlayerController playerControllerScript;
+
+    // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("SpawnObstacle", startDelay, repeatRate);
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
-    }
-
-    void SpawnObstacle()
-    {
-        if (playerControllerScript.gameOver == false)
-        {
-            Instantiate(UFOPrefab, spawnPos, UFOPrefab.transform.rotation);
-        }
+        InvokeRepeating("SpawnObstacle", startDelay, repeatRate);
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    void SpawnObstacle()
+    {
+        if (playerControllerScript.gameOver == false)
+        {
+            int obstacleIndex = Random.Range(0, UFOPrefab.Length);
+            Vector3 SpawnManager = spawnPos;
+            Instantiate(UFOPrefab[obstacleIndex], spawnPos, UFOPrefab[obstacleIndex].transform.rotation);
+        }
     }
 }

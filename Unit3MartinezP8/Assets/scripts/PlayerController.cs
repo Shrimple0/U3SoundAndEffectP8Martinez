@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     public AudioClip jumpSound;
     public AudioClip crashSound;
     private AudioSource playerAudio;
+    public bool canDoubleJump = false;
+    public float dash = 2;
+    public bool isDashing = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,15 +24,42 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     public bool isOnGround = true;
     public ParticleSystem dirtParticle;
+    public int jumpCount = 0;
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround && !gameOver)
+        if (Input.GetKeyDown(KeyCode.Space) && isOnGround && !gameOver && jumpCount < 2)
         {
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isOnGround = false;
             dirtParticle.Stop();
-            playerAudio.PlayOneShot(jumpSound, 1.0f);
+            playerAudio.PlayOneShot(jumpSound, 1f);
+            jumpCount += 1;
         }
+        JumpCountCheck();
+    }
+    
+        private void JumpCountCheck()
+    {
+        if (jumpCount >= 2)
+        {
+            isOnGround = false;
+            jumpCount = 0;
+        }
+        else if (jumpCount == 1 && !gameOver)
+        {
+            isOnGround = true;
+        }
+
+        // Dash  with the B Key
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            isDashing = true;
+        }
+        if (Input.GetKeyUp(KeyCode.B))
+        {
+            isDashing = false;
+        }
+
     }
     public bool gameOver = false;
     public ParticleSystem explosionParticle;

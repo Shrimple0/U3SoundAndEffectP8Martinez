@@ -4,29 +4,32 @@ using UnityEngine;
 
 public class WaddleDeeSpawn : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public GameObject WaddleDeePrefab;
-    private Vector3 spawnPos = new Vector3(15, 1, 0);
-    private float startDelay = 2;
-    private float repeatRate = 2;
+    public GameObject[] WaddleDeePrefab;
+    private Vector3 spawnPos = new Vector3(8, 2, 0);
+    private float startDelay = 1.0f;
+    private float repeatRate = 1.5f;
     private PlayerController playerControllerScript;
+
+    // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("SpawnObstacle", startDelay, repeatRate);
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
-    }
-
-    void SpawnObstacle()
-    {
-        if (playerControllerScript.gameOver == false)
-        {
-            Instantiate(WaddleDeePrefab, spawnPos, WaddleDeePrefab.transform.rotation);
-        }
+        InvokeRepeating("SpawnObstacle", startDelay, repeatRate);
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    void SpawnObstacle()
+    {
+        if (playerControllerScript.gameOver == false)
+        {
+            int obstacleIndex = Random.Range(0, WaddleDeePrefab.Length);
+            Vector3 SpawnManager = spawnPos;
+            Instantiate(WaddleDeePrefab[obstacleIndex], spawnPos, WaddleDeePrefab[obstacleIndex].transform.rotation);
+        }
     }
 }
